@@ -20,10 +20,7 @@ func (d *Details)ByCriteria( criteria string, value any) []model.User {
 			if user.City == value.(string) {
 				results = append(results, user)
 			}
-		case "phone":
-			if user.Phone == value.(int64) {
-				results = append(results, user)
-			}
+		
 		case "married":
 			if user.Married == value.(bool) {
 				results = append(results, user)
