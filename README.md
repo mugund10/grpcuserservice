@@ -1,8 +1,8 @@
 ## Assignment: Developing a Golang gRPC User Service with Search
 
-
-### note: This grpcUserService is hosted on aws and located @ `mugund10.openwaves.in:9292`
-   * Load service methods/endpoints using server reflection
+> [!NOTE]
+> This grpcUserService is hosted on aws and located @ `mugund10.openwaves.in:9292`
+   * ANY gRPC lients can load this service methods/endpoints using server reflection
    * For more details see EXAMPLES from below
 
 <details> 
