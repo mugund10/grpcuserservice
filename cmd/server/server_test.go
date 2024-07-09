@@ -92,7 +92,7 @@ func Test(t *testing.T) {
 
 	// Process the response from the server.
 	for _, user := range users1.User {
-		log.Printf("User ID: %d, First Name: %s, City: %s", user.Id, user.Fname, user.City)
+		log.Printf("User ID: %d, First Name: %s, City: %s , married: %t", user.Id, user.Fname, user.City, user.Married)
 	}
 
 }

@@ -67,7 +67,7 @@ func (u *Userser) Fetchuser(ctx context.Context, req *pb.Requestid) (*pb.User, e
 			}
 		}
 	}
-	//if the requested id is not prersent on the database then its returns a error
+	//if the requested id is not prersent on the database then its returns a error to the client
 	if req.Id != resp.Id {
 		return nil, fmt.Errorf("user %d is not found", req.Id)
 	}
@@ -113,10 +113,22 @@ func (u *Userser) Search(ctx context.Context, req *pb.Criteria) (*pb.Users, erro
 	usersli := []*pb.User{}
 
 	field := req.Field
-	value, err := anysolver.ConvertAnyToInterface(req.Value)
-	if err != nil {
-		log.Fatalf("error: %s", err)
+	soul := 0
+	if  field == "married"{
+		soul = 1
+	}else if field == "city"{
+		soul = 2
 	}
+	if soul == 0 {
+		return nil, fmt.Errorf("criteria %s is not found use city or married", field)
+	}
+	value, err := anysolver.ConvertAnyToInterface(req.Value,soul)
+	if err != nil {
+		//log.Printf("error1: %s", err)
+		return nil, fmt.Errorf("use grpcurl", )
+	}
+
+	
 
 	muser := search.ByCriteria(field, value)
 	log.Printf("SEARCH(endpoint): served users details with criteria where %s = %v:\n", field, value)
