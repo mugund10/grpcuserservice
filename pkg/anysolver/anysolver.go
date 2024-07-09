@@ -1,4 +1,4 @@
-//a package to solve protobuf any to golang any(interface{}) problem vice versa
+//a package to solve protobuf any to golang any(interface{}) problem vice versa.
 package anysolver
 
 import (
