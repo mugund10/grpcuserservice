@@ -4,6 +4,7 @@
 > This grpcUserService is hosted on aws and located @ `mugund10.openwaves.in:9292`
    * ANY gRPC lients can load this service methods/endpoints using server reflection
    * For more details see EXAMPLES from below
+   * [^1]: My reference.
 
 <details> 
 <summary> INSTALLATION </summary>
@@ -46,10 +47,14 @@ go build  ./cmd/server/ && ./server
     ```shell
     go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
     ```
+
+> [!TIP]
+> use localhost when running locally and the port will be same ex: localhost:9292
+
 * ### TO get Info
     *   About service
         ```shell
-         #use localhost when running locally and the port will be same
+         
          grpcurl --plaintext mugund10.openwaves.in:9292 list Userservice
         ```
          returns `
@@ -77,12 +82,16 @@ go build  ./cmd/server/ && ./server
              int64 id = 1;
             }
             `
+
+> [!IMPORTANT]
+> change your directory to cmd/client to access the json files
+
+
 * ### TO Call a gRPCServer
 
     *   Endpoint Fetchuser
         ```shell
-        # change your directory to cmd/client to access the json files
-         grpcurl --plaintext -d @ mugund10.openwaves.in:9292 Userservice.Fetchuser < fetchuser.json
+        grpcurl --plaintext -d @ mugund10.openwaves.in:9292 Userservice.Fetchuser < fetchuser.json
         ```
          returns `
             {
@@ -352,3 +361,9 @@ Disclaimer: Please note that this assignment is solely for the purpose of assess
 
 
 - [x] completed all objectives
+
+[Converting interface to any proto and vice versa in golang](https://ravina01997.medium.com/converting-interface-to-any-proto-and-vice-versa-in-golang-27badc3e23f1)
+
+
+
+
