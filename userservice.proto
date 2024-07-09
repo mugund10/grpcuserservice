@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+
+
+message User {
+    int64 id = 1;
+    string fname = 2;
+    string city = 3;
+    int64 phone = 4;
+    double height = 5;
+    bool married = 6;
+}
+
+message Users {
+    repeated User user = 1;
+}
+
+message Requestid {
+    int64 id = 1;
+}
+
+message Requestids {
+    repeated Requestid id = 1;
+}
+
+service Userservice {
+    rpc Fetchuser(Requestid) returns(User) {}
+    rpc Fetchusers(Requestids) returns(Users) {}
+}

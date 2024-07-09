@@ -2,7 +2,7 @@ package search
 
 import (
 	"fmt"
-	"github.com/mugund10/gRPC_userService/internal/model"
+	"github.com/mugund10/grpcuserservice/internal/model"
 )
 
 type Details struct {

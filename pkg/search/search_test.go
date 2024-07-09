@@ -4,8 +4,8 @@ package search_test
 import (
 	"fmt"
 	"testing"
-	"github.com/mugund10/gRPC_userService/internal/db"
-	"github.com/mugund10/gRPC_userService/pkg/search"
+	"github.com/mugund10/grpcuserservice/internal/db"
+	"github.com/mugund10/grpcuserservice/pkg/search"
 )
 
 func Test(t *testing.T) {

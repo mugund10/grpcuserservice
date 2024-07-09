@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/mugund10/gRPC_userService/internal/model"
+	"github.com/mugund10/grpcuserservice/internal/model"
 )
 
 var UsersList []model.User
