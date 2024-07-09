@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserserviceClient interface {
 	Fetchuser(ctx context.Context, in *Requestid, opts ...grpc.CallOption) (*User, error)
 	Fetchusers(ctx context.Context, in *Requestids, opts ...grpc.CallOption) (*Users, error)
+	Search(ctx context.Context, in *Criteria, opts ...grpc.CallOption) (*Users, error)
 }
 
 type userserviceClient struct {
@@ -52,12 +53,22 @@ func (c *userserviceClient) Fetchusers(ctx context.Context, in *Requestids, opts
 	return out, nil
 }
 
+func (c *userserviceClient) Search(ctx context.Context, in *Criteria, opts ...grpc.CallOption) (*Users, error) {
+	out := new(Users)
+	err := c.cc.Invoke(ctx, "/Userservice/Search", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserserviceServer is the server API for Userservice service.
 // All implementations must embed UnimplementedUserserviceServer
 // for forward compatibility
 type UserserviceServer interface {
 	Fetchuser(context.Context, *Requestid) (*User, error)
 	Fetchusers(context.Context, *Requestids) (*Users, error)
+	Search(context.Context, *Criteria) (*Users, error)
 	mustEmbedUnimplementedUserserviceServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedUserserviceServer) Fetchuser(context.Context, *Requestid) (*U
 }
 func (UnimplementedUserserviceServer) Fetchusers(context.Context, *Requestids) (*Users, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Fetchusers not implemented")
+}
+func (UnimplementedUserserviceServer) Search(context.Context, *Criteria) (*Users, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 func (UnimplementedUserserviceServer) mustEmbedUnimplementedUserserviceServer() {}
 
@@ -120,6 +134,24 @@ func _Userservice_Fetchusers_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Userservice_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Criteria)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserserviceServer).Search(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Userservice/Search",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserserviceServer).Search(ctx, req.(*Criteria))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Userservice_ServiceDesc is the grpc.ServiceDesc for Userservice service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var Userservice_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Fetchusers",
 			Handler:    _Userservice_Fetchusers_Handler,
+		},
+		{
+			MethodName: "Search",
+			Handler:    _Userservice_Search_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

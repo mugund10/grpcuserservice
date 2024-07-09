@@ -1,10 +1,9 @@
-package main_test
+package main
 
 import (
 	"context"
 	"fmt"
 	"log"
-	"testing"
 	"time"
 
 	"github.com/mugund10/grpcuserservice/pb"
@@ -13,7 +12,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func Test(t *testing.T) {
+func main() {
 	addr := "localhost:9292"
 	creds := insecure.NewCredentials()
 
@@ -56,13 +55,13 @@ func Test(t *testing.T) {
 	value, err := anysolver.ConvertInterfaceToAny("MUMBAI")
 	errcheck(err)
 
-	
+	log.Println(value.TypeUrl, string(value.Value))
 
 	searchRequest := &pb.Criteria{
 		Field: "city",
 		Value: value,
 	}
-	
+	log.Println(searchRequest)
 
 	users, err := client.Search(context.Background(), searchRequest)
 	if err != nil {
@@ -77,13 +76,13 @@ func Test(t *testing.T) {
 	value1, err := anysolver.ConvertInterfaceToAny(true)
 	errcheck(err)
 
-	
+	log.Println(value1.TypeUrl, string(value1.Value))
 
 	searchRequest1 := &pb.Criteria{
 		Field: "married",
 		Value: value1, // Set ny as the value for the Any field
 	}
-	
+	log.Println(searchRequest1)
 
 	users1, err := client.Search(context.Background(), searchRequest1)
 	if err != nil {

@@ -6,17 +6,12 @@ import (
 	"log"
 	"net"
 
-	"encoding/json"
-
-	"github.com/golang/protobuf/ptypes/any"
-	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/mugund10/grpcuserservice/internal/db"
 	"github.com/mugund10/grpcuserservice/pb"
+	"github.com/mugund10/grpcuserservice/pkg/anysolver"
 	"github.com/mugund10/grpcuserservice/pkg/search"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func main() {
@@ -76,7 +71,7 @@ func (u *Userser) Fetchuser(ctx context.Context, req *pb.Requestid) (*pb.User, e
 	if req.Id != resp.Id {
 		return nil, fmt.Errorf("user %d is not found", req.Id)
 	}
-
+	log.Printf("FETCHUSER(endpoint): served user detail with id %d \n", req.Id)
 	return &resp, nil
 }
 
@@ -101,6 +96,7 @@ func (u *Userser) Fetchusers(ctx context.Context, req *pb.Requestids) (*pb.Users
 			}
 		}
 	}
+	log.Printf("FETCHUSERS(endpoint): served users details with ids %s \n", req.Id[:])
 
 	resp := pb.Users{
 		User: usersli,
@@ -117,13 +113,13 @@ func (u *Userser) Search(ctx context.Context, req *pb.Criteria) (*pb.Users, erro
 	usersli := []*pb.User{}
 
 	field := req.Field
-	value , err := ConvertAnyToInterface(req.Value)
+	value, err := anysolver.ConvertAnyToInterface(req.Value)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
 
 	muser := search.ByCriteria(field, value)
-	fmt.Printf("users with criteria %s = %v:\n", field, value)
+	log.Printf("SEARCH(endpoint): served users details with criteria where %s = %v:\n", field, value)
 	for _, user := range muser {
 
 		usersli = append(usersli, &pb.User{
@@ -140,18 +136,4 @@ func (u *Userser) Search(ctx context.Context, req *pb.Criteria) (*pb.Users, erro
 		User: usersli,
 	}
 	return &resp, nil
-}
-
-func ConvertAnyToInterface(anyValue *any.Any) (interface{}, error) {
-	var value interface{}
-	bytesValue := &wrappers.BytesValue{}
-	err := anypb.UnmarshalTo(anyValue, bytesValue, proto.UnmarshalOptions{})
-	if err != nil {
-		return value, err
-	}
-	uErr := json.Unmarshal(bytesValue.Value, &value)
-	if uErr != nil {
-		return value, uErr
-	}
-	return value, nil
 }
