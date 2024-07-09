@@ -4,7 +4,7 @@
 > This grpcUserService is hosted on aws and located @ `mugund10.openwaves.in:9292`
    * ANY gRPC lients can load this service methods/endpoints using server reflection
    * For more details see EXAMPLES from below
-   [^1]: My reference for the package [anysolver](github.com/mugund10/grpcuserservice/pkg/anysolver/anysolver.go) .
+   [^1]: My reference for the package [anysolver](./pkg/anysolver/anysolver.go) .
 
 <details> 
 <summary> INSTALLATION </summary>
